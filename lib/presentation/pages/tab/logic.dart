@@ -3,17 +3,25 @@ import 'package:fitness_app/router/app_route.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final tabBarLogicProvider =
-    NotifierProvider.family<TabBarLogic, TabBarState, int>(TabBarLogic.new);
+final tabBarLogicProvider = NotifierProvider<TabBarLogic, TabBarState>(
+  TabBarLogic.new,
+);
 
 class TabBarLogic extends Notifier<TabBarState> {
-  TabBarLogic(this.initialIndex);
-
-  final int initialIndex;
-
   @override
   TabBarState build() {
-    return TabBarState(activeTab: TabModule.values[_safeIndex(initialIndex)]);
+    return const TabBarState(activeTab: TabModule.home);
+  }
+
+  void syncFromRouteIndex(int routeIndex) {
+    final safeIndex = _safeIndex(routeIndex);
+    final routeTab = TabModule.values[safeIndex];
+
+    if (routeTab == state.activeTab) {
+      return;
+    }
+
+    state = state.copyWith(activeTab: routeTab);
   }
 
   void selectTab(int index) {
