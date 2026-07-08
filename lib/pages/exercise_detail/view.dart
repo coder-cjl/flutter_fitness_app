@@ -25,14 +25,11 @@ class ExerciseDetailPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // GIF 动态图
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: DLAssetGifImage(
-                imageName: "${exercise.id}-${exercise.mediaId}.gif",
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stack) =>
-                    _buildPlaceholder(context),
-              ),
+            DLAssetGifImage(
+              imageName: "${exercise.id}-${exercise.mediaId}.gif",
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stack) =>
+                  _buildPlaceholder(context),
             ),
 
             Padding(

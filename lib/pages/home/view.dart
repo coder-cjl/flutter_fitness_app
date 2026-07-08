@@ -67,7 +67,7 @@ class HomePage extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.85,
+                    childAspectRatio: 0.80,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
                   ),
@@ -122,7 +122,7 @@ class _ExerciseCard extends ConsumerWidget {
               flex: 3,
               child: DLAssetImage(
                 imageName: "${exercise.id}-${exercise.mediaId}.jpg",
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 errorBuilder: (context, error, stack) =>
                     _buildPlaceholder(context),
               ),
@@ -144,23 +144,24 @@ class _ExerciseCard extends ConsumerWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    // const Spacer(),
-                    // Text(
-                    //   exercise.instruction(appLocale),
-                    //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    //     color: Theme.of(context).colorScheme.primary,
-                    //   ),
-                    //   maxLines: 1,
-                    //   overflow: TextOverflow.ellipsis,
-                    // ),
                     const Spacer(),
-                    Text(
-                      exercise.target,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Wrap(
+                      spacing: 4,
+                      runSpacing: 4,
+                      children: [
+                        _buildTag(
+                          context,
+                          exercise.category,
+                          Theme.of(context).colorScheme.primaryContainer,
+                          Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                        _buildTag(
+                          context,
+                          exercise.equipment,
+                          Theme.of(context).colorScheme.secondaryContainer,
+                          Theme.of(context).colorScheme.onSecondaryContainer,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -179,6 +180,29 @@ class _ExerciseCard extends ConsumerWidget {
         Icons.fitness_center,
         size: 48,
         color: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
+    );
+  }
+
+  Widget _buildTag(
+    BuildContext context,
+    String text,
+    Color backgroundColor,
+    Color textColor,
+  ) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: backgroundColor.withValues(alpha: 0.7),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        text,
+        style: Theme.of(
+          context,
+        ).textTheme.labelSmall?.copyWith(color: textColor, fontSize: 10),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

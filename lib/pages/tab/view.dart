@@ -18,31 +18,34 @@ class TabBarPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appText = ref.watch(appTextProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(appText.tabTitle(activeTab))),
-      body: IndexedStack(index: activeTab.index, children: pages),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: activeTab.index,
-        onTap: (index) {
-          final nextTab = TabModule.values[index];
-          if (nextTab == activeTab) {
-            return;
-          }
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(title: Text(appText.tabTitle(activeTab))),
+        body: IndexedStack(index: activeTab.index, children: pages),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: activeTab.index,
+          onTap: (index) {
+            final nextTab = TabModule.values[index];
+            if (nextTab == activeTab) {
+              return;
+            }
 
-          ref
-              .read(navigationProvider)
-              .goNamed(AppRoute.tabName, queryParams: {'tab': nextTab.name});
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: appText.tabTitle(TabModule.home),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
-            label: appText.tabTitle(TabModule.mine),
-          ),
-        ],
+            ref
+                .read(navigationProvider)
+                .goNamed(AppRoute.tabName, queryParams: {'tab': nextTab.name});
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              label: appText.tabTitle(TabModule.home),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person),
+              label: appText.tabTitle(TabModule.mine),
+            ),
+          ],
+        ),
       ),
     );
   }
