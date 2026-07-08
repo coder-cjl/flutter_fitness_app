@@ -9,6 +9,6 @@ void main() {
     await tester.pumpWidget(const ProviderScope(child: DLApp()));
     await tester.pumpAndSettle();
 
-    expect(find.text('HomePage'), findsOneWidget);
+    expect(find.text('首页'), findsWidgets);
   });
 }
