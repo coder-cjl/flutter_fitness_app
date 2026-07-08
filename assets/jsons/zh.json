@@ -18,5 +18,9 @@
   "switch_theme_to_light": "切换到浅色模式",
   "switch_theme_to_dark": "切换到深色模式",
   "current_locale": "当前语言：中文",
-  "switch_locale": "Cambiar a Español"
+  "switch_locale": "Cambiar a Español",
+  "body_part_label": "身体部位",
+  "equipment_label": "器材",
+  "target_label": "目标肌肉",
+  "secondary_muscles_label": "辅助肌群"
 }

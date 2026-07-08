@@ -34,6 +34,13 @@ mixin DLTextMixin {
       text('current_locale', 'Current Language: English');
   String get switchLocale => text('switch_locale', '切换到中文');
 
+  // Detail page labels
+  String get bodyPartLabel => text('body_part_label', 'Body Part');
+  String get equipmentLabel => text('equipment_label', 'Equipment');
+  String get targetLabel => text('target_label', 'Target');
+  String get secondaryMusclesLabel =>
+      text('secondary_muscles_label', 'Secondary Muscles');
+
   String tabTitle(TabModule tab) {
     return switch (tab) {
       TabModule.home => homePageTitle,

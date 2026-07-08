@@ -90,18 +90,75 @@ class ExerciseDetailPage extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _InfoRow(
-              label: 'Body Part',
-              value: _formatBodyPart(exercise.bodyPart),
+            // Body Part & Equipment row
+            Row(
+              children: [
+                Expanded(
+                  child: _InfoColumn(
+                    label: appText.bodyPartLabel,
+                    value: exercise.bodyPart,
+                  ),
+                ),
+                Container(
+                  height: 40,
+                  width: 1,
+                  color: Theme.of(context).dividerColor,
+                ),
+                Expanded(
+                  child: _InfoColumn(
+                    label: appText.equipmentLabel,
+                    value: exercise.equipment,
+                  ),
+                ),
+              ],
             ),
-            const Divider(height: 16),
-            _InfoRow(label: 'Equipment', value: exercise.equipment),
-            const Divider(height: 16),
-            _InfoRow(label: 'Target', value: exercise.target),
-            if (exercise.muscleGroup.isNotEmpty) ...[
-              const Divider(height: 16),
-              _InfoRow(label: 'Muscle Group', value: exercise.muscleGroup),
+            const Divider(height: 24),
+
+            // Target
+            _InfoColumn(
+              label: appText.targetLabel,
+              value: exercise.target,
+              isHighlighted: true,
+            ),
+
+            // Secondary Muscles
+            if (exercise.secondaryMuscles.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Text(
+                appText.secondaryMusclesLabel,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: exercise.secondaryMuscles.map((muscle) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.secondaryContainer.withValues(alpha: 0.7),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      muscle,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSecondaryContainer,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ],
           ],
         ),
@@ -122,40 +179,38 @@ class ExerciseDetailPage extends ConsumerWidget {
       ),
     );
   }
-
-  String _formatBodyPart(String bodyPart) {
-    return bodyPart
-        .split(' ')
-        .map(
-          (word) =>
-              word.isNotEmpty ? word[0].toUpperCase() + word.substring(1) : '',
-        )
-        .join(' ');
-  }
 }
 
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
+class _InfoColumn extends StatelessWidget {
+  const _InfoColumn({
+    required this.label,
+    required this.value,
+    this.isHighlighted = false,
+  });
 
   final String label;
   final String value;
+  final bool isHighlighted;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
+        const SizedBox(height: 4),
         Text(
           value,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: isHighlighted ? FontWeight.bold : FontWeight.w600,
+            color: isHighlighted ? Theme.of(context).colorScheme.primary : null,
+          ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

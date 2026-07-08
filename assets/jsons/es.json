@@ -18,5 +18,9 @@
   "switch_theme_to_light": "Cambiar a modo claro",
   "switch_theme_to_dark": "Cambiar a modo oscuro",
   "current_locale": "Idioma actual: Español",
-  "switch_locale": "切换到中文"
+  "switch_locale": "切换到中文",
+  "body_part_label": "Parte del cuerpo",
+  "equipment_label": "Equipo",
+  "target_label": "Objetivo",
+  "secondary_muscles_label": "Músculos secundarios"
 }
