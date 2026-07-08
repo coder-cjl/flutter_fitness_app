@@ -1,6 +1,7 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/data/models/exercise_model.dart';
 import 'package:fitness_app/presentation/pages/home/exercise_notifier.dart';
+import 'package:fitness_app/presentation/widgets/iamge_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -110,8 +111,8 @@ class _ExerciseCard extends ConsumerWidget {
           // 图片
           Expanded(
             flex: 3,
-            child: Image.asset(
-              "assets/images/${exercise.id}-${exercise.mediaId}.jpg",
+            child: DLAssetImage(
+              imageName: "${exercise.id}-${exercise.mediaId}.jpg",
               fit: BoxFit.cover,
               errorBuilder: (context, error, stack) =>
                   _buildPlaceholder(context),
