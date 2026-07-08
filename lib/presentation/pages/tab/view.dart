@@ -1,4 +1,4 @@
-import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/presentation/pages/home/view.dart';
 import 'package:fitness_app/presentation/pages/mine/view.dart';
 import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
@@ -16,7 +16,7 @@ class TabBarPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appText = DLAppText.of(context);
+    final appText = ref.watch(appTextProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(appText.tabTitle(activeTab))),

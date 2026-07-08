@@ -1,5 +1,6 @@
 import 'package:fitness_app/core/settings/app_local.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/settings/app_theme.dart';
 import 'package:fitness_app/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,10 @@ class DLApp extends ConsumerWidget {
     final appRouter = ref.watch(appRouterProvider);
     final themeMode = ref.watch(appThemeModeProvider);
     final locale = ref.watch(appLocaleProvider);
+    final appText = ref.watch(appTextProvider);
 
     return MaterialApp.router(
-      onGenerateTitle: (context) => DLAppText.of(context).appTitle,
+      onGenerateTitle: (context) => appText.appTitle,
       theme: ThemeData(
         brightness: Brightness.light,
         colorSchemeSeed: Colors.blue,

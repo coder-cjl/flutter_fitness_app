@@ -1,4 +1,4 @@
-import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/presentation/pages/login/view.dart';
 import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
 import 'package:fitness_app/presentation/pages/tab/view.dart';
@@ -91,7 +91,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     errorBuilder: (context, state) {
-      final appText = DLAppText.of(context);
+      final container = ProviderScope.containerOf(context);
+      final appText = container.read(appTextProvider);
 
       return Scaffold(
         appBar: AppBar(title: Text(appText.pageNotFoundTitle)),

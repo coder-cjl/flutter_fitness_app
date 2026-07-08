@@ -1,4 +1,4 @@
-import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/router/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +13,7 @@ class LoginPage extends ConsumerStatefulWidget {
 class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    final appText = DLAppText.of(context);
+    final appText = ref.watch(appTextProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(appText.loginTitle)),

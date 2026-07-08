@@ -1,5 +1,5 @@
 import 'package:fitness_app/core/settings/app_local.dart';
-import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/settings/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +10,7 @@ class MinePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(appThemeModeProvider);
-
-    final appText = DLAppText.of(context);
+    final appText = ref.watch(appTextProvider);
     final pageTitle = appText.minePageTitle;
     final currentThemeLabel = appText.currentThemeLabel(themeMode);
     final switchThemeLabel = appText.switchThemeLabel(themeMode);
