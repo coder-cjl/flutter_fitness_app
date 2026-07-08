@@ -1,8 +1,8 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
+import 'package:fitness_app/core/widgets/image_asset.dart';
 import 'package:fitness_app/exercises/models/exercise_model.dart';
-import 'package:fitness_app/presentation/pages/home/providers.dart';
-import 'package:fitness_app/presentation/pages/home/state.dart';
-import 'package:fitness_app/presentation/widgets/image_asset.dart';
+import 'package:fitness_app/pages/home/providers.dart';
+import 'package:fitness_app/pages/home/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

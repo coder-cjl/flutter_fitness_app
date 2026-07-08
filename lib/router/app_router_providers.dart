@@ -1,12 +1,13 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
-import 'package:fitness_app/presentation/pages/login/view.dart';
-import 'package:fitness_app/presentation/pages/tab/state.dart';
-import 'package:fitness_app/presentation/pages/tab/view.dart';
+import 'package:fitness_app/pages/login/view.dart';
+import 'package:fitness_app/pages/tab/view.dart';
 import 'package:fitness_app/router/app_route.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import 'tab_module.dart';
 
 final rootNavigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
   return GlobalKey<NavigatorState>(debugLabel: 'rootNavigator');

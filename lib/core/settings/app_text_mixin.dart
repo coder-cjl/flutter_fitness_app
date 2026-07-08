@@ -1,4 +1,4 @@
-import 'package:fitness_app/presentation/pages/tab/state.dart';
+import 'package:fitness_app/router/tab_module.dart';
 import 'package:flutter/material.dart';
 
 mixin DLTextMixin {
