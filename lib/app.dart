@@ -22,10 +22,12 @@ class DLApp extends ConsumerWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         colorSchemeSeed: Colors.blue,
+        appBarTheme: const AppBarTheme(centerTitle: true),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.blue,
+        appBarTheme: const AppBarTheme(centerTitle: true),
       ),
       themeMode: themeMode,
       locale: locale,
