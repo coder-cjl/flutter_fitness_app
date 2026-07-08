@@ -1,7 +1,7 @@
 import 'package:fitness_app/app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const DLApp());
+  runApp(const ProviderScope(child: DLApp()));
 }
-  

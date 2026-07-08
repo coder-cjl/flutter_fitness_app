@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fitness_app/router/app_router.dart';
 
-class DLApp extends StatefulWidget {
+class DLApp extends ConsumerWidget {
   const DLApp({super.key});
 
   @override
-  State<DLApp> createState() => _DLAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appRouter = ref.watch(appRouterProvider);
 
-class _DLAppState extends State<DLApp> {
-  @override
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        title: 'DL',
-        theme: ThemeData(primarySwatch: Colors.blue),
-      ),
+    return MaterialApp.router(
+      title: 'DL',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      routerConfig: appRouter,
     );
   }
 }
