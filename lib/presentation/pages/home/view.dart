@@ -1,4 +1,3 @@
-import 'package:fitness_app/core/providers/exercise_image.dart';
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/data/models/exercise_model.dart';
 import 'package:fitness_app/presentation/pages/home/exercise_notifier.dart';
@@ -102,8 +101,6 @@ class _ExerciseCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final imageMapAsync = ref.watch(exerciseImageMapProvider);
-
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 2,
@@ -113,22 +110,11 @@ class _ExerciseCard extends ConsumerWidget {
           // 图片
           Expanded(
             flex: 3,
-            child: imageMapAsync.when(
-              data: (imageMap) {
-                final imagePath = imageMap[exercise.id];
-                print('Exercise ID: ${exercise.id}, Image Path: $imagePath');
-                if (imagePath != null) {
-                  return Image.asset(
-                    imagePath,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stack) =>
-                        _buildPlaceholder(context),
-                  );
-                }
-                return _buildPlaceholder(context);
-              },
-              loading: () => _buildPlaceholder(context),
-              error: (e, s) => _buildPlaceholder(context),
+            child: Image.asset(
+              "assets/images/${exercise.id}-${exercise.mediaId}.jpg",
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stack) =>
+                  _buildPlaceholder(context),
             ),
           ),
 
