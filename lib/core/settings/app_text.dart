@@ -1,79 +1,68 @@
-import 'package:fitness_app/core/settings/app_settings.dart';
-import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
+import 'dart:convert';
+import 'package:fitness_app/core/settings/app_local.dart';
+import 'package:fitness_app/core/settings/app_text_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class AppText {
-  const AppText._();
+class DLAppText with DLTextMixin {
+  DLAppText._(this._values);
 
-  static bool isZh(Locale locale) {
-    return locale.languageCode == AppSettings.zhCN.languageCode;
+  final Map<String, String> _values;
+
+  static const LocalizationsDelegate<DLAppText> delegate = _DLAppTextDelegate();
+
+  static DLAppText of(BuildContext context) {
+    return Localizations.of<DLAppText>(context, DLAppText)!;
   }
 
-  static String homePageTitle(Locale locale) {
-    return isZh(locale) ? '首页' : 'Home Page';
-  }
+  static Future<DLAppText> load(Locale locale) async {
+    final languageCode = _supportedLanguageCode(locale);
+    final raw = await rootBundle.loadString('assets/jsons/$languageCode.json');
+    final decoded = jsonDecode(raw);
 
-  static String homeLoading(Locale locale) {
-    return isZh(locale) ? '加载训练数据中...' : 'Loading exercises...';
-  }
-
-  static String homeLoadError(Locale locale) {
-    return isZh(locale) ? '训练数据加载失败' : 'Failed to load exercises';
-  }
-
-  static String homeEmpty(Locale locale) {
-    return isZh(locale) ? '暂无训练数据' : 'No exercises available';
-  }
-
-  static String homePreviewTitle(Locale locale) {
-    return isZh(locale) ? '训练预览' : 'Exercise Preview';
-  }
-
-  static String instructionLabel(Locale locale) {
-    return isZh(locale) ? '说明' : 'Instruction';
-  }
-
-  static String stepsLabel(Locale locale) {
-    return isZh(locale) ? '步骤' : 'Steps';
-  }
-
-  static String minePageTitle(Locale locale) {
-    return isZh(locale) ? '我的页面' : 'Mine Page';
-  }
-
-  static String tabTitle(Locale locale, TabModule tab) {
-    final zh = isZh(locale);
-    return switch (tab) {
-      TabModule.home => zh ? '首页' : 'Home',
-      TabModule.mine => zh ? '我的' : 'Mine',
-    };
-  }
-
-  static String tabLabel(Locale locale, TabModule tab) {
-    return tabTitle(locale, tab);
-  }
-
-  static String currentThemeLabel(Locale locale, ThemeMode mode) {
-    final zh = isZh(locale);
-    if (mode == ThemeMode.dark) {
-      return zh ? '当前主题：深色' : 'Current Theme: Dark';
+    if (decoded is! Map<String, dynamic>) {
+      return DLAppText._(<String, String>{});
     }
-    return zh ? '当前主题：浅色' : 'Current Theme: Light';
+
+    return DLAppText._(
+      decoded.map((key, value) => MapEntry(key, value.toString())),
+    );
   }
 
-  static String switchThemeLabel(Locale locale, ThemeMode mode) {
-    final zh = isZh(locale);
-    if (mode == ThemeMode.dark) {
-      return zh ? '切换到浅色模式' : 'Switch to Light Mode';
+  static String _supportedLanguageCode(Locale locale) {
+    if (locale.languageCode == DLAppLocal.zhCN.languageCode) {
+      return DLAppLocal.zhCN.languageCode;
     }
-    return zh ? '切换到深色模式' : 'Switch to Dark Mode';
+    if (locale.languageCode == DLAppLocal.esES.languageCode) {
+      return DLAppLocal.esES.languageCode;
+    }
+
+    return DLAppLocal.enUS.languageCode;
   }
 
-  static String currentLocaleLabel(Locale locale) {
-    return isZh(locale) ? '当前语言：中文' : 'Current Language: English';
+  @override
+  String text(String key, String fallback) {
+    return _values[key] ?? fallback;
+  }
+}
+
+class _DLAppTextDelegate extends LocalizationsDelegate<DLAppText> {
+  const _DLAppTextDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    return DLAppLocal.supportedLocales.any(
+      (supportedLocale) => supportedLocale.languageCode == locale.languageCode,
+    );
   }
 
-  static String switchLocaleLabel(Locale locale) {
-    return isZh(locale) ? 'Switch to English' : '切换到中文';
+  @override
+  Future<DLAppText> load(Locale locale) {
+    return DLAppText.load(locale);
+  }
+
+  @override
+  bool shouldReload(covariant LocalizationsDelegate<DLAppText> old) {
+    return false;
   }
 }

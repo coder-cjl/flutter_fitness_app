@@ -1,3 +1,4 @@
+import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/presentation/pages/login/view.dart';
 import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
 import 'package:fitness_app/presentation/pages/tab/view.dart';
@@ -90,9 +91,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     errorBuilder: (context, state) {
+      final appText = DLAppText.of(context);
+
       return Scaffold(
-        appBar: AppBar(title: const Text('Page Not Found')),
-        body: Center(child: Text(state.error?.toString() ?? 'Unknown route')),
+        appBar: AppBar(title: Text(appText.pageNotFoundTitle)),
+        body: Center(
+          child: Text(state.error?.toString() ?? appText.unknownRoute),
+        ),
       );
     },
   );

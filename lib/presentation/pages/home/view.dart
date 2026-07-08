@@ -1,4 +1,3 @@
-import 'package:fitness_app/core/settings/app_settings.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/data/exercise_data_source.dart';
 import 'package:fitness_app/data/models/exercise_model.dart';
@@ -10,16 +9,16 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(appLocaleProvider);
+    final appText = DLAppText.of(context);
+    final locale = Localizations.localeOf(context);
     final exercisesAsync = ref.watch(exercisesProvider);
 
     return exercisesAsync.when(
-      loading: () => Center(child: Text(AppText.homeLoading(locale))),
-      error: (error, stack) =>
-          Center(child: Text(AppText.homeLoadError(locale))),
+      loading: () => Center(child: Text(appText.loadingExercises)),
+      error: (error, stack) => Center(child: Text(appText.exercisesLoadError)),
       data: (exercises) {
         if (exercises.isEmpty) {
-          return Center(child: Text(AppText.homeEmpty(locale)));
+          return Center(child: Text(appText.exercisesEmpty));
         }
 
         return ListView.separated(
@@ -28,7 +27,11 @@ class HomePage extends ConsumerWidget {
           separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             final exercise = exercises[index];
-            return _ExercisePreviewCard(exercise: exercise, locale: locale);
+            return _ExercisePreviewCard(
+              exercise: exercise,
+              locale: locale,
+              appText: appText,
+            );
           },
         );
       },
@@ -37,10 +40,15 @@ class HomePage extends ConsumerWidget {
 }
 
 class _ExercisePreviewCard extends StatelessWidget {
-  const _ExercisePreviewCard({required this.exercise, required this.locale});
+  const _ExercisePreviewCard({
+    required this.exercise,
+    required this.locale,
+    required this.appText,
+  });
 
   final ExerciseModel exercise;
   final Locale locale;
+  final DLAppText appText;
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +66,14 @@ class _ExercisePreviewCard extends StatelessWidget {
             Text('${exercise.bodyPart} · ${exercise.target}'),
             const SizedBox(height: 8),
             Text(
-              '${AppText.instructionLabel(locale)}: $instruction',
+              '${appText.instructionLabel}: $instruction',
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 8),
             if (steps.isNotEmpty)
               Text(
-                '${AppText.stepsLabel(locale)}: ${steps.first}',
+                '${appText.stepsLabel}: ${steps.first}',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),

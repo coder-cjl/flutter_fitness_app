@@ -1,4 +1,6 @@
-import 'package:fitness_app/core/settings/app_settings.dart';
+import 'package:fitness_app/core/settings/app_local.dart';
+import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_theme.dart';
 import 'package:fitness_app/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,7 +16,7 @@ class DLApp extends ConsumerWidget {
     final locale = ref.watch(appLocaleProvider);
 
     return MaterialApp.router(
-      title: 'DL',
+      onGenerateTitle: (context) => DLAppText.of(context).appTitle,
       theme: ThemeData(
         brightness: Brightness.light,
         colorSchemeSeed: Colors.blue,
@@ -25,8 +27,9 @@ class DLApp extends ConsumerWidget {
       ),
       themeMode: themeMode,
       locale: locale,
-      supportedLocales: AppSettings.supportedLocales,
+      supportedLocales: DLAppLocal.supportedLocales,
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        DLAppText.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

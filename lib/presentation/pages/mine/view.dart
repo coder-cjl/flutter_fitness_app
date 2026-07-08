@@ -1,5 +1,6 @@
-import 'package:fitness_app/core/settings/app_settings.dart';
+import 'package:fitness_app/core/settings/app_local.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
+import 'package:fitness_app/core/settings/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,12 +10,13 @@ class MinePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(appThemeModeProvider);
-    final locale = ref.watch(appLocaleProvider);
-    final pageTitle = AppText.minePageTitle(locale);
-    final currentThemeLabel = AppText.currentThemeLabel(locale, themeMode);
-    final switchThemeLabel = AppText.switchThemeLabel(locale, themeMode);
-    final currentLocaleLabel = AppText.currentLocaleLabel(locale);
-    final switchLocaleLabel = AppText.switchLocaleLabel(locale);
+
+    final appText = DLAppText.of(context);
+    final pageTitle = appText.minePageTitle;
+    final currentThemeLabel = appText.currentThemeLabel(themeMode);
+    final switchThemeLabel = appText.switchThemeLabel(themeMode);
+    final currentLocaleLabel = appText.currentLocale;
+    final switchLocaleLabel = appText.switchLocale;
 
     return Center(
       child: Padding(
@@ -34,7 +36,9 @@ class MinePage extends ConsumerWidget {
             Text(currentLocaleLabel),
             const SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () => ref.read(appLocaleProvider.notifier).toggle(),
+              onPressed: () {
+                ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.esES);
+              },
               child: Text(switchLocaleLabel),
             ),
           ],

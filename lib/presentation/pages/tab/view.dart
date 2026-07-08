@@ -1,4 +1,3 @@
-import 'package:fitness_app/core/settings/app_settings.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/presentation/pages/home/view.dart';
 import 'package:fitness_app/presentation/pages/mine/view.dart';
@@ -17,10 +16,10 @@ class TabBarPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(appLocaleProvider);
+    final appText = DLAppText.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppText.tabTitle(locale, activeTab))),
+      appBar: AppBar(title: Text(appText.tabTitle(activeTab))),
       body: IndexedStack(index: activeTab.index, children: pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: activeTab.index,
@@ -39,11 +38,11 @@ class TabBarPage extends ConsumerWidget {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
-            label: AppText.tabLabel(locale, TabModule.home),
+            label: appText.tabTitle(TabModule.home),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.person),
-            label: AppText.tabLabel(locale, TabModule.mine),
+            label: appText.tabTitle(TabModule.mine),
           ),
         ],
       ),

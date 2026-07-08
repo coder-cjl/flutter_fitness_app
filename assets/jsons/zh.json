@@ -1,4 +1,22 @@
 {
-    "loading_exercises": "正在加载练习...",
-    "home_page_title": "首页"
+  "app_title": "DL",
+  "login_title": "登录",
+  "login_page_title": "登录页",
+  "sign_in_button": "登录",
+  "page_not_found_title": "页面未找到",
+  "unknown_route": "未知路由",
+  "home_page_title": "首页",
+  "loading_exercises": "正在加载练习...",
+  "exercises_load_error": "训练数据加载失败",
+  "exercises_empty": "暂无训练数据",
+  "instruction_label": "说明",
+  "steps_label": "步骤",
+  "mine_page_title": "我的页面",
+  "mine_tab_title": "我的",
+  "current_theme_light": "当前主题：浅色",
+  "current_theme_dark": "当前主题：深色",
+  "switch_theme_to_light": "切换到浅色模式",
+  "switch_theme_to_dark": "切换到深色模式",
+  "current_locale": "当前语言：中文",
+  "switch_locale": "Cambiar a Español"
 }

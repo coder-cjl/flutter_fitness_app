@@ -1,0 +1,22 @@
+{
+  "app_title": "DL",
+  "login_title": "Iniciar sesión",
+  "login_page_title": "Página de inicio de sesión",
+  "sign_in_button": "Iniciar sesión",
+  "page_not_found_title": "Página no encontrada",
+  "unknown_route": "Ruta desconocida",
+  "home_page_title": "Inicio",
+  "loading_exercises": "Cargando ejercicios...",
+  "exercises_load_error": "Error al cargar los ejercicios",
+  "exercises_empty": "No hay ejercicios disponibles",
+  "instruction_label": "Instrucción",
+  "steps_label": "Pasos",
+  "mine_page_title": "Mi página",
+  "mine_tab_title": "Mi",
+  "current_theme_light": "Tema actual: Claro",
+  "current_theme_dark": "Tema actual: Oscuro",
+  "switch_theme_to_light": "Cambiar a modo claro",
+  "switch_theme_to_dark": "Cambiar a modo oscuro",
+  "current_locale": "Idioma actual: Español",
+  "switch_locale": "切换到中文"
+}

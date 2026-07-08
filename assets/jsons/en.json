@@ -1,4 +1,22 @@
 {
-    "loading_exercises": "Loading exercises...",
-    "home_page_title": "Home"
+  "app_title": "DL",
+  "login_title": "Login",
+  "login_page_title": "Login Page",
+  "sign_in_button": "Sign In",
+  "page_not_found_title": "Page Not Found",
+  "unknown_route": "Unknown route",
+  "home_page_title": "Home",
+  "loading_exercises": "Loading exercises...",
+  "exercises_load_error": "Failed to load exercises",
+  "exercises_empty": "No exercises available",
+  "instruction_label": "Instruction",
+  "steps_label": "Steps",
+  "mine_page_title": "Mine Page",
+  "mine_tab_title": "Mine",
+  "current_theme_light": "Current Theme: Light",
+  "current_theme_dark": "Current Theme: Dark",
+  "switch_theme_to_light": "Switch to Light Mode",
+  "switch_theme_to_dark": "Switch to Dark Mode",
+  "current_locale": "Current Language: English",
+  "switch_locale": "Cambiar a Español"
 }
