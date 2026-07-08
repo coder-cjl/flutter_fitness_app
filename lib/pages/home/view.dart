@@ -158,8 +158,8 @@ class _ExerciseCard extends ConsumerWidget {
                         _buildTag(
                           context,
                           exercise.equipment,
-                          Theme.of(context).colorScheme.secondaryContainer,
-                          Theme.of(context).colorScheme.onSecondaryContainer,
+                          Theme.of(context).colorScheme.primaryContainer,
+                          Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ],
                     ),
