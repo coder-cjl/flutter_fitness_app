@@ -3,11 +3,11 @@ import 'package:fitness_app/router/app_route.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final tabBarLogicProvider = NotifierProvider<TabBarLogic, TabBarState>(
-  TabBarLogic.new,
+final tabBarNotifierProvider = NotifierProvider<TabBarNotifier, TabBarState>(
+  TabBarNotifier.new,
 );
 
-class TabBarLogic extends Notifier<TabBarState> {
+class TabBarNotifier extends Notifier<TabBarState> {
   @override
   TabBarState build() {
     return const TabBarState(activeTab: TabModule.home);

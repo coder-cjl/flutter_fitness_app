@@ -2,7 +2,7 @@ import 'package:fitness_app/core/settings/app_settings.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/presentation/pages/home/view.dart';
 import 'package:fitness_app/presentation/pages/mine/view.dart';
-import 'package:fitness_app/presentation/pages/tab/logic.dart';
+import 'package:fitness_app/presentation/pages/tab/notifier.dart';
 import 'package:fitness_app/presentation/pages/tab/state.dart';
 import 'package:fitness_app/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _TabBarPageState extends ConsumerState<TabBarPage> {
   void initState() {
     super.initState();
     ref
-        .read(tabBarLogicProvider.notifier)
+        .read(tabBarNotifierProvider.notifier)
         .syncFromRouteIndex(widget.initialIndex);
   }
 
@@ -34,14 +34,14 @@ class _TabBarPageState extends ConsumerState<TabBarPage> {
 
     if (oldWidget.initialIndex != widget.initialIndex) {
       ref
-          .read(tabBarLogicProvider.notifier)
+          .read(tabBarNotifierProvider.notifier)
           .syncFromRouteIndex(widget.initialIndex);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final tabState = ref.watch(tabBarLogicProvider);
+    final tabState = ref.watch(tabBarNotifierProvider);
     final locale = ref.watch(appLocaleProvider);
     final activeTab = TabModule.values[tabState.currentIndex];
 
@@ -55,10 +55,10 @@ class _TabBarPageState extends ConsumerState<TabBarPage> {
             return;
           }
 
-          final tabLogic = ref.read(tabBarLogicProvider.notifier);
+          final tabNotifier = ref.read(tabBarNotifierProvider.notifier);
           final navigation = ref.read(navigationProvider);
 
-          tabLogic.selectTabAndSyncRoute(index, navigation);
+          tabNotifier.selectTabAndSyncRoute(index, navigation);
         },
         items: [
           BottomNavigationBarItem(

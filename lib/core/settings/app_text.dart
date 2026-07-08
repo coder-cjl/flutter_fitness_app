@@ -13,6 +13,30 @@ class AppText {
     return isZh(locale) ? '首页' : 'Home Page';
   }
 
+  static String homeLoading(Locale locale) {
+    return isZh(locale) ? '加载训练数据中...' : 'Loading exercises...';
+  }
+
+  static String homeLoadError(Locale locale) {
+    return isZh(locale) ? '训练数据加载失败' : 'Failed to load exercises';
+  }
+
+  static String homeEmpty(Locale locale) {
+    return isZh(locale) ? '暂无训练数据' : 'No exercises available';
+  }
+
+  static String homePreviewTitle(Locale locale) {
+    return isZh(locale) ? '训练预览' : 'Exercise Preview';
+  }
+
+  static String instructionLabel(Locale locale) {
+    return isZh(locale) ? '说明' : 'Instruction';
+  }
+
+  static String stepsLabel(Locale locale) {
+    return isZh(locale) ? '步骤' : 'Steps';
+  }
+
   static String minePageTitle(Locale locale) {
     return isZh(locale) ? '我的页面' : 'Mine Page';
   }
