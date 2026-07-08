@@ -2,7 +2,7 @@ import 'package:fitness_app/core/settings/app_locale_provider.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/settings/app_theme_provider.dart';
-import 'package:fitness_app/router/app_router_providers.dart';
+import 'package:fitness_app/router/app_router_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

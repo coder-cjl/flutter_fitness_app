@@ -1,7 +1,7 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/pages/login/view.dart';
 import 'package:fitness_app/pages/tab/view.dart';
-import 'package:fitness_app/router/app_route.dart';
+import 'package:fitness_app/router/app_route_url.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
