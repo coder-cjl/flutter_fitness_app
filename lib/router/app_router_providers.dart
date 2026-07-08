@@ -3,7 +3,6 @@ import 'package:fitness_app/presentation/pages/login/view.dart';
 import 'package:fitness_app/presentation/pages/tab/state.dart';
 import 'package:fitness_app/presentation/pages/tab/view.dart';
 import 'package:fitness_app/router/app_route.dart';
-import 'package:fitness_app/router/auth_state_provider.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,10 +20,6 @@ final navigationProvider = Provider<DLNavigation>((ref) {
 final appRouterProvider = Provider<GoRouter>((ref) {
   final rootNavigatorKey = ref.watch(rootNavigatorKeyProvider);
   final authRefreshListenable = ValueNotifier<int>(0);
-
-  ref.listen<bool>(authStateProvider, (previous, next) {
-    authRefreshListenable.value++;
-  });
 
   ref.onDispose(authRefreshListenable.dispose);
 
@@ -59,17 +54,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) {
-      final isLoggedIn = ref.read(authStateProvider);
       final isOnLogin = state.matchedLocation == AppRoute.loginPath;
 
-      if (!isLoggedIn && !isOnLogin) {
-        return Uri(
-          path: AppRoute.loginPath,
-          queryParameters: {'from': state.uri.toString()},
-        ).toString();
-      }
+      // if (!isOnLogin) {
+      //   return Uri(
+      //     path: AppRoute.loginPath,
+      //     queryParameters: {'from': state.uri.toString()},
+      //   ).toString();
+      // }
 
-      if (isLoggedIn && isOnLogin) {
+      if (isOnLogin) {
         final from = state.uri.queryParameters['from'];
 
         if (_isSafeInternalLocation(from) && !_isLoginLocation(from)) {

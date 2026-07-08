@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fitness_app/core/settings/app_local.dart';
+import 'package:fitness_app/core/settings/app_locale_provider.dart';
 import 'package:fitness_app/core/settings/app_text.dart';
 
 final appTextProvider = NotifierProvider<AppTextNotifier, DLAppText>(

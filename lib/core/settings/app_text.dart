@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fitness_app/core/settings/app_local.dart';
+import 'package:fitness_app/core/settings/app_locale_provider.dart';
 import 'package:fitness_app/core/settings/app_text_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
