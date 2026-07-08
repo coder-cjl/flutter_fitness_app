@@ -20,65 +20,65 @@ class ExerciseDetailPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(exercise.name)),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // GIF 动态图
-              AspectRatio(
-                aspectRatio: 16 / 9,
-                child: DLAssetGifImage(
-                  imageName: "${exercise.id}-${exercise.mediaId}.gif",
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stack) =>
-                      _buildPlaceholder(context),
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // GIF 动态图
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: DLAssetGifImage(
+                imageName: "${exercise.id}-${exercise.mediaId}.gif",
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stack) =>
+                    _buildPlaceholder(context),
               ),
+            ),
 
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 基础信息卡片
-                    _buildInfoCard(context, appText, locale),
-                    const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 基础信息卡片
+                  _buildInfoCard(context, appText, locale),
+                  const SizedBox(height: 16),
 
-                    // Instructions 说明
-                    if (instructions.isNotEmpty) ...[
-                      Text(
-                        appText.instructionLabel,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                  // Instructions 说明
+                  if (instructions.isNotEmpty) ...[
+                    Text(
+                      appText.instructionLabel,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        instructions,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 24),
-                    ],
-
-                    // Instruction Steps 步骤
-                    if (steps.isNotEmpty) ...[
-                      Text(
-                        appText.stepsLabel,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 12),
-                      ...steps.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final step = entry.value;
-                        return _StepItem(index: index + 1, text: step);
-                      }),
-                    ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      instructions,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 24),
                   ],
-                ),
+
+                  // Instruction Steps 步骤
+                  if (steps.isNotEmpty) ...[
+                    Text(
+                      appText.stepsLabel,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ...steps.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final step = entry.value;
+                      return _StepItem(index: index + 1, text: step);
+                    }),
+                  ],
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
