@@ -15,6 +15,8 @@ class TabBarPage extends ConsumerStatefulWidget {
 }
 
 class _TabBarPageState extends ConsumerState<TabBarPage> {
+  final pages = <Widget>[HomePage(), MinePage()];
+
   @override
   void initState() {
     super.initState();
@@ -37,9 +39,6 @@ class _TabBarPageState extends ConsumerState<TabBarPage> {
   @override
   Widget build(BuildContext context) {
     final tabState = ref.watch(tabBarLogicProvider);
-    final tabLogic = ref.read(tabBarLogicProvider.notifier);
-    final navigation = ref.read(navigationProvider);
-    const pages = <Widget>[HomePage(), MinePage()];
 
     return Scaffold(
       appBar: AppBar(title: Text(tabState.title)),
@@ -50,6 +49,9 @@ class _TabBarPageState extends ConsumerState<TabBarPage> {
           if (index == tabState.currentIndex) {
             return;
           }
+
+          final tabLogic = ref.read(tabBarLogicProvider.notifier);
+          final navigation = ref.read(navigationProvider);
 
           tabLogic.selectTabAndSyncRoute(index, navigation);
         },
