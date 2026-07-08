@@ -11,6 +11,10 @@ class DLAppLocal {
   static const List<Locale> supportedLocales = <Locale>[zhCN, enUS, esES];
 }
 
+final appLocaleProvider = NotifierProvider<AppLocaleNotifier, Locale>(
+  AppLocaleNotifier.new,
+);
+
 class AppLocaleNotifier extends Notifier<Locale> {
   @override
   Locale build() => DLAppLocal.zhCN;
@@ -19,7 +23,3 @@ class AppLocaleNotifier extends Notifier<Locale> {
     state = locale;
   }
 }
-
-final appLocaleProvider = NotifierProvider<AppLocaleNotifier, Locale>(
-  AppLocaleNotifier.new,
-);

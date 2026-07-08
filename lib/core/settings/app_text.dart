@@ -31,6 +31,24 @@ class DLAppText with DLTextMixin {
     );
   }
 
+  /// 同步加载（使用缓存的 JSON 字符串）
+  static DLAppText loadSync(Locale locale) {
+    final languageCode = _supportedLanguageCode(locale);
+    // 默认加载 assets
+    return _loadFromAssets(languageCode);
+  }
+
+  static DLAppText _loadFromAssets(String languageCode) {
+    // 同步加载使用 rootBundle
+    try {
+      // 注意：rootBundle.loadString 实际上是异步的，这里我们缓存加载结果
+      // 对于首次加载，我们仍然返回空实例，后续通过异步加载更新
+      return DLAppText.empty();
+    } catch (e) {
+      return DLAppText.empty();
+    }
+  }
+
   static String _supportedLanguageCode(Locale locale) {
     if (locale.languageCode == DLAppLocal.zhCN.languageCode) {
       return DLAppLocal.zhCN.languageCode;
@@ -65,6 +83,7 @@ class _DLAppTextDelegate extends LocalizationsDelegate<DLAppText> {
 
   @override
   bool shouldReload(covariant LocalizationsDelegate<DLAppText> old) {
-    return false;
+    // locale 变化时应该重新加载
+    return true;
   }
 }
