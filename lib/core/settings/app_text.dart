@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 class DLAppText with DLTextMixin {
   DLAppText._(this._values);
 
+  factory DLAppText.empty() => DLAppText._({});
+
   final Map<String, String> _values;
 
   static const LocalizationsDelegate<DLAppText> delegate = _DLAppTextDelegate();
@@ -21,7 +23,7 @@ class DLAppText with DLTextMixin {
     final decoded = jsonDecode(raw);
 
     if (decoded is! Map<String, dynamic>) {
-      return DLAppText._(<String, String>{});
+      return DLAppText.empty();
     }
 
     return DLAppText._(
