@@ -1,4 +1,5 @@
 import 'package:fitness_app/presentation/pages/login/view.dart';
+import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
 import 'package:fitness_app/presentation/pages/tab/view.dart';
 import 'package:fitness_app/router/app_route.dart';
 import 'package:fitness_app/router/auth_state.dart';
@@ -10,6 +11,20 @@ import 'package:go_router/go_router.dart';
 final rootNavigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
   return GlobalKey<NavigatorState>(debugLabel: 'rootNavigator');
 });
+
+bool _isSafeInternalLocation(String? location) {
+  if (location == null || location.isEmpty) {
+    return false;
+  }
+
+  final uri = Uri.tryParse(location);
+  return uri != null && uri.hasAbsolutePath && !uri.hasAuthority;
+}
+
+bool _isLoginLocation(String? location) {
+  final uri = Uri.tryParse(location ?? '');
+  return uri?.path == AppRoute.loginPath;
+}
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final rootNavigatorKey = ref.watch(rootNavigatorKeyProvider);
@@ -35,13 +50,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoute.tabName,
         path: AppRoute.tabPath,
         builder: (context, state) {
-          final tab = state.uri.queryParameters['tab'];
-          final initialIndex = switch (tab) {
-            'mine' => 1,
-            _ => 0,
-          };
+          final tab = TabModule.fromQuery(state.uri.queryParameters['tab']);
 
-          return TabBarPage(initialIndex: initialIndex);
+          return TabBarPage(activeTab: tab);
         },
       ),
       GoRoute(
@@ -60,15 +71,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isOnLogin = state.matchedLocation == AppRoute.loginPath;
 
       if (!isLoggedIn && !isOnLogin) {
-        final from = Uri.encodeComponent(state.matchedLocation);
-        return '${AppRoute.loginPath}?from=$from';
+        return Uri(
+          path: AppRoute.loginPath,
+          queryParameters: {'from': state.uri.toString()},
+        ).toString();
       }
 
       if (isLoggedIn && isOnLogin) {
         final from = state.uri.queryParameters['from'];
 
-        if (from != null && from.isNotEmpty) {
-          return Uri.decodeComponent(from);
+        if (_isSafeInternalLocation(from) && !_isLoginLocation(from)) {
+          return from;
         }
 
         return AppRoute.tabPath;

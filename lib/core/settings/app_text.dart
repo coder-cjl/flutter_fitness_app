@@ -1,5 +1,5 @@
 import 'package:fitness_app/core/settings/app_settings.dart';
-import 'package:fitness_app/presentation/pages/tab/state.dart';
+import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
 import 'package:flutter/material.dart';
 
 class AppText {
