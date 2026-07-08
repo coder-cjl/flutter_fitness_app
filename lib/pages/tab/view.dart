@@ -29,11 +29,9 @@ class TabBarPage extends ConsumerWidget {
             return;
           }
 
-          final navigation = ref.read(navigationProvider);
-          navigation.goNamed(
-            AppRoute.tabName,
-            queryParams: {'tab': nextTab.queryValue},
-          );
+          ref
+              .read(navigationProvider)
+              .goNamed(AppRoute.tabName, queryParams: {'tab': nextTab.name});
         },
         items: [
           BottomNavigationBarItem(
