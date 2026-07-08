@@ -1,4 +1,6 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
+import 'package:fitness_app/pages/exercise_detail/provider.dart';
+import 'package:fitness_app/pages/exercise_detail/view.dart';
 import 'package:fitness_app/pages/login/view.dart';
 import 'package:fitness_app/pages/tab/view.dart';
 import 'package:fitness_app/router/app_route_url.dart';
@@ -52,6 +54,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoute.mineName,
         path: AppRoute.minePath,
         redirect: (context, state) => '${AppRoute.tabPath}?tab=mine',
+      ),
+      GoRoute(
+        name: AppRoute.exerciseDetailName,
+        path: AppRoute.exerciseDetailPath,
+        builder: (context, state) {
+          final exercise = ProviderScope.containerOf(context)
+              .read(selectedExerciseProvider);
+          if (exercise == null) {
+            return const Scaffold(
+              body: Center(child: Text('Exercise not found')),
+            );
+          }
+          return ExerciseDetailPage(exercise: exercise);
+        },
       ),
     ],
     redirect: (context, state) {

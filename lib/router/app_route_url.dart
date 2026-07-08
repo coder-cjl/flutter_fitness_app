@@ -12,4 +12,7 @@ class AppRoute {
 
   static const String mineName = 'mine';
   static const String minePath = '/mine';
+
+  static const String exerciseDetailName = 'exercise_detail';
+  static const String exerciseDetailPath = '/exercise/:id';
 }
