@@ -17,6 +17,7 @@ class HomePage extends ConsumerWidget {
     final exercisesAsync = ref.watch(filteredExercisesProvider);
     final selectedBodyPart = ref.watch(bodyPartFilterProvider);
     final appText = ref.watch(appTextProvider);
+    final scrollController = ref.watch(exerciseScrollControllerProvider);
 
     return Scaffold(
       body: Column(
@@ -62,6 +63,7 @@ class HomePage extends ConsumerWidget {
                 }
 
                 return GridView.builder(
+                  controller: scrollController,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

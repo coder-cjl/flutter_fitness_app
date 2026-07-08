@@ -2,6 +2,7 @@
 
 import 'package:fitness_app/exercises/data/exercise_data_source_provider.dart';
 import 'package:fitness_app/exercises/models/exercise_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 筛选状态
@@ -18,6 +19,25 @@ class BodyPartFilterNotifier extends Notifier<String?> {
     state = bodyPart;
   }
 }
+
+// 滚动控制器
+final exerciseScrollControllerProvider = Provider<ScrollController>((ref) {
+  final controller = ScrollController();
+  ref.onDispose(controller.dispose);
+
+  // 监听筛选变化，自动滚动到顶部
+  ref.listen<String?>(bodyPartFilterProvider, (_, _) {
+    if (controller.hasClients) {
+      controller.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  });
+
+  return controller;
+});
 
 // 过滤后的练习列表
 final filteredExercisesProvider = Provider<AsyncValue<List<ExerciseModel>>>((
