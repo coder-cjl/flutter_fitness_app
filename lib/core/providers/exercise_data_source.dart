@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:fitness_app/data/models/exercise_model.dart';
+import 'package:fitness_app/models/exercise_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

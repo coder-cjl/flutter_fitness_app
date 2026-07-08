@@ -1,5 +1,5 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
-import 'package:fitness_app/router/auth_state.dart';
+import 'package:fitness_app/router/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

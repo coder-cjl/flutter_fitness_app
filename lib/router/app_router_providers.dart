@@ -1,9 +1,9 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/presentation/pages/login/view.dart';
-import 'package:fitness_app/presentation/pages/tab/tab_module.dart';
+import 'package:fitness_app/presentation/pages/tab/state.dart';
 import 'package:fitness_app/presentation/pages/tab/view.dart';
 import 'package:fitness_app/router/app_route.dart';
-import 'package:fitness_app/router/auth_state.dart';
+import 'package:fitness_app/router/auth_state_provider.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,19 +13,10 @@ final rootNavigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) {
   return GlobalKey<NavigatorState>(debugLabel: 'rootNavigator');
 });
 
-bool _isSafeInternalLocation(String? location) {
-  if (location == null || location.isEmpty) {
-    return false;
-  }
-
-  final uri = Uri.tryParse(location);
-  return uri != null && uri.hasAbsolutePath && !uri.hasAuthority;
-}
-
-bool _isLoginLocation(String? location) {
-  final uri = Uri.tryParse(location ?? '');
-  return uri?.path == AppRoute.loginPath;
-}
+final navigationProvider = Provider<DLNavigation>((ref) {
+  final router = ref.watch(appRouterProvider);
+  return DLNavigation(router);
+});
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final rootNavigatorKey = ref.watch(rootNavigatorKeyProvider);
@@ -104,7 +95,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   );
 });
 
-final navigationProvider = Provider<DLNavigation>((ref) {
-  final router = ref.watch(appRouterProvider);
-  return DLNavigation(router);
-});
+bool _isSafeInternalLocation(String? location) {
+  if (location == null || location.isEmpty) {
+    return false;
+  }
+
+  final uri = Uri.tryParse(location);
+  return uri != null && uri.hasAbsolutePath && !uri.hasAuthority;
+}
+
+bool _isLoginLocation(String? location) {
+  final uri = Uri.tryParse(location ?? '');
+  return uri?.path == AppRoute.loginPath;
+}

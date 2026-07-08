@@ -1,6 +1,6 @@
 import 'package:fitness_app/core/settings/app_local.dart';
 import 'package:fitness_app/core/settings/app_text_provider.dart';
-import 'package:fitness_app/core/settings/app_theme.dart';
+import 'package:fitness_app/core/settings/app_theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

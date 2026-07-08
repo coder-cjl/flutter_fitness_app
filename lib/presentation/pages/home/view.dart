@@ -1,6 +1,7 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
-import 'package:fitness_app/data/models/exercise_model.dart';
-import 'package:fitness_app/presentation/pages/home/exercise_notifier.dart';
+import 'package:fitness_app/models/exercise_model.dart';
+import 'package:fitness_app/presentation/pages/home/providers.dart';
+import 'package:fitness_app/presentation/pages/home/state.dart';
 import 'package:fitness_app/presentation/widgets/iamge_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

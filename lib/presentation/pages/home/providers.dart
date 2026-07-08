@@ -1,5 +1,7 @@
-import 'package:fitness_app/data/exercise_data_source.dart';
-import 'package:fitness_app/data/models/exercise_model.dart';
+// ignore_for_file: file_names
+
+import 'package:fitness_app/core/providers/exercise_data_source.dart';
+import 'package:fitness_app/models/exercise_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 筛选状态
@@ -35,17 +37,3 @@ final filteredExercisesProvider = Provider<AsyncValue<List<ExerciseModel>>>((
         .toList();
   });
 });
-
-// 所有身体部位分类
-const bodyParts = [
-  'back',
-  'cardio',
-  'chest',
-  'lower arms',
-  'lower legs',
-  'neck',
-  'shoulders',
-  'upper arms',
-  'upper legs',
-  'waist',
-];
