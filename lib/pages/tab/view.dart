@@ -1,4 +1,5 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
+import 'package:fitness_app/pages/exercise_all/view.dart';
 import 'package:fitness_app/pages/home/view.dart';
 import 'package:fitness_app/pages/mine/view.dart';
 import 'package:fitness_app/router/app_router_provider.dart';
@@ -12,7 +13,7 @@ class TabBarPage extends ConsumerWidget {
 
   final TabModule activeTab;
 
-  static const pages = <Widget>[HomePage(), MinePage()];
+  static const pages = <Widget>[HomePage(), ExerciseAllPage(), MinePage()];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,6 +40,10 @@ class TabBarPage extends ConsumerWidget {
             BottomNavigationBarItem(
               icon: const Icon(Icons.home),
               label: appText.tabTitle(TabModule.home),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.fitness_center),
+              label: appText.tabTitle(TabModule.exerciseAll),
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.person),

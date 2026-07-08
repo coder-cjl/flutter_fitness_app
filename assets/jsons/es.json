@@ -22,5 +22,6 @@
   "body_part_label": "Parte del cuerpo",
   "equipment_label": "Equipo",
   "target_label": "Objetivo",
-  "secondary_muscles_label": "Músculos secundarios"
+  "secondary_muscles_label": "Músculos secundarios",
+  "exercise_all_page_title": "Todos los ejercicios"
 }

@@ -56,11 +56,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         redirect: (context, state) => '${AppRoute.tabPath}?tab=mine',
       ),
       GoRoute(
+        name: AppRoute.exerciseAllName,
+        path: AppRoute.exerciseAllPath,
+        redirect: (context, state) => '${AppRoute.tabPath}?tab=exercise_all',
+      ),
+      GoRoute(
         name: AppRoute.exerciseDetailName,
         path: AppRoute.exerciseDetailPath,
         builder: (context, state) {
-          final exercise = ProviderScope.containerOf(context)
-              .read(selectedExerciseProvider);
+          final exercise = ProviderScope.containerOf(
+            context,
+          ).read(selectedExerciseProvider);
           if (exercise == null) {
             return const Scaffold(
               body: Center(child: Text('Exercise not found')),
@@ -70,28 +76,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
     ],
-    redirect: (context, state) {
-      final isOnLogin = state.matchedLocation == AppRoute.loginPath;
+    // redirect: (context, state) {
+    //   final isOnLogin = state.matchedLocation == AppRoute.loginPath;
 
-      // if (!isOnLogin) {
-      //   return Uri(
-      //     path: AppRoute.loginPath,
-      //     queryParameters: {'from': state.uri.toString()},
-      //   ).toString();
-      // }
+    //   if (isOnLogin) {
+    //     final from = state.uri.queryParameters['from'];
 
-      if (isOnLogin) {
-        final from = state.uri.queryParameters['from'];
+    //     if (_isSafeInternalLocation(from) && !_isLoginLocation(from)) {
+    //       return from;
+    //     }
 
-        if (_isSafeInternalLocation(from) && !_isLoginLocation(from)) {
-          return from;
-        }
+    //     return AppRoute.tabPath;
+    //   }
 
-        return AppRoute.tabPath;
-      }
-
-      return null;
-    },
+    //   return null;
+    // },
     errorBuilder: (context, state) {
       final container = ProviderScope.containerOf(context);
       final appText = container.read(appTextProvider);

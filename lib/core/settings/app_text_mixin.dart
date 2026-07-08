@@ -12,6 +12,8 @@ mixin DLTextMixin {
       text('page_not_found_title', 'Page Not Found');
   String get unknownRoute => text('unknown_route', 'Unknown route');
   String get homePageTitle => text('home_page_title', 'Home');
+  String get exerciseAllPageTitle =>
+      text('exercise_all_page_title', 'Exercise All');
   String get loadingExercises =>
       text('loading_exercises', 'Loading exercises...');
   String get exercisesLoadError =>
@@ -44,6 +46,7 @@ mixin DLTextMixin {
   String tabTitle(TabModule tab) {
     return switch (tab) {
       TabModule.home => homePageTitle,
+      TabModule.exerciseAll => exerciseAllPageTitle,
       TabModule.mine => mineTabTitle,
     };
   }

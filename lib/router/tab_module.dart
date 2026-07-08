@@ -1,5 +1,6 @@
 enum TabModule {
   home('home'),
+  exerciseAll('exercise_all'),
   mine('mine');
 
   const TabModule(this.queryValue);
@@ -9,6 +10,7 @@ enum TabModule {
   static TabModule fromQuery(String? value) {
     return switch (value) {
       'mine' => TabModule.mine,
+      'exercise_all' => TabModule.exerciseAll,
       _ => TabModule.home,
     };
   }

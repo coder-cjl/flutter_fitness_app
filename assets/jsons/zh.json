@@ -22,5 +22,6 @@
   "body_part_label": "身体部位",
   "equipment_label": "器材",
   "target_label": "目标肌肉",
-  "secondary_muscles_label": "辅助肌群"
+  "secondary_muscles_label": "辅助肌群",
+  "exercise_all_page_title": "所有练习"
 }
