@@ -149,12 +149,12 @@ class _ExerciseCard extends ConsumerWidget {
                       spacing: 4,
                       runSpacing: 4,
                       children: [
-                        _buildTag(
-                          context,
-                          exercise.category,
-                          Theme.of(context).colorScheme.primaryContainer,
-                          Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
+                        // _buildTag(
+                        //   context,
+                        //   exercise.category,
+                        //   Theme.of(context).colorScheme.primaryContainer,
+                        //   Theme.of(context).colorScheme.onPrimaryContainer,
+                        // ),
                         _buildTag(
                           context,
                           exercise.equipment,
