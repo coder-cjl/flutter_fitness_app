@@ -18,4 +18,7 @@ class AppRoute {
 
   static const String exerciseDetailName = 'exercise_detail';
   static const String exerciseDetailPath = '/exercise/:id';
+
+  static const String taskDetailName = 'task_detail';
+  static const String taskDetailPath = '/task/:id';
 }

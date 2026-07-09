@@ -44,5 +44,8 @@
   "add_workout_label": "New Workout",
   "create_workout_label": "Create Workout",
   "select_workout_hint": "Select a workout to edit",
-  "no_exercises_hint": "No exercises added yet"
+  "no_exercises_hint": "No exercises added yet",
+  "create_task_label": "Create Task",
+  "task_created_message": "Task created!",
+  "workout_abandoned": "Abandoned"
 }

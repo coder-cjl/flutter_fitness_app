@@ -78,6 +78,11 @@ mixin DLTextMixin {
       text('select_workout_hint', 'Select a workout to edit');
   String get noExercisesHint =>
       text('no_exercises_hint', 'No exercises added yet');
+  String get createTaskLabel => text('create_task_label', 'Create Task');
+  String get taskCreatedMessage =>
+      text('task_created_message', 'Task created!');
+  String get workoutAbandoned =>
+      text('workout_abandoned', 'Abandoned');
 
   String tabTitle(TabModule tab) {
     return switch (tab) {
