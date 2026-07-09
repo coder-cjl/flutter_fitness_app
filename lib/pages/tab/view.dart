@@ -29,10 +29,9 @@ class TabBarPage extends ConsumerWidget {
       canPop: false,
       child: Scaffold(
         body: IndexedStack(index: activeTab.index, children: pages),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: activeTab.index,
-          onTap: (index) {
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: activeTab.index,
+          onDestinationSelected: (index) {
             final nextTab = TabModule.values[index];
             if (nextTab == activeTab) {
               return;
@@ -45,20 +44,20 @@ class TabBarPage extends ConsumerWidget {
                   queryParams: {'tab': nextTab.queryValue},
                 );
           },
-          items: [
-            BottomNavigationBarItem(
+          destinations: [
+            NavigationDestination(
               icon: const Icon(Icons.home),
               label: appText.tabTitle(TabModule.home),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               icon: const Icon(Icons.edit_note),
               label: appText.tabTitle(TabModule.workoutPlan),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               icon: const Icon(Icons.fitness_center),
               label: appText.tabTitle(TabModule.exerciseAll),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               icon: const Icon(Icons.person),
               label: appText.tabTitle(TabModule.mine),
             ),

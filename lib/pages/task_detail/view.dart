@@ -43,10 +43,8 @@ class TaskDetailPage extends ConsumerWidget {
               subtitle: Text('${item.sets} sets × ${item.reps} reps'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                final container = ProviderScope.containerOf(context);
-                container.read(selectedExerciseProvider.notifier).state =
-                    item.exercise;
-                container
+                ref.read(selectedExerciseProvider.notifier).state = item.exercise;
+                ref
                     .read(navigationProvider)
                     .pushNamed(AppRoute.exerciseDetailName, params: {'id': item.exercise.id});
               },
