@@ -16,47 +16,48 @@ class MinePage extends ConsumerWidget {
     final currentThemeLabel = appText.currentThemeLabel(themeMode);
     final switchThemeLabel = appText.switchThemeLabel(themeMode);
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(pageTitle, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 12),
-            Text(currentThemeLabel),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () => ref.read(appThemeModeProvider.notifier).toggle(),
-              child: Text(switchThemeLabel),
-            ),
-            const SizedBox(height: 24),
-            const Divider(),
-            const SizedBox(height: 16),
-            Text('Language / 语言 / Idioma',
-                style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 16),
-            _LanguageButton(
-              locale: DLAppLocal.zhCN,
-              label: '中文',
-              isSelected: currentLocale.languageCode == 'zh',
-              onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.zhCN),
-            ),
-            const SizedBox(height: 8),
-            _LanguageButton(
-              locale: DLAppLocal.enUS,
-              label: 'English',
-              isSelected: currentLocale.languageCode == 'en',
-              onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.enUS),
-            ),
-            const SizedBox(height: 8),
-            _LanguageButton(
-              locale: DLAppLocal.esES,
-              label: 'Español',
-              isSelected: currentLocale.languageCode == 'es',
-              onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.esES),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(title: Text(pageTitle)),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(currentThemeLabel),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () => ref.read(appThemeModeProvider.notifier).toggle(),
+                child: Text(switchThemeLabel),
+              ),
+              const SizedBox(height: 24),
+              const Divider(),
+              const SizedBox(height: 16),
+              Text('Language / 语言 / Idioma',
+                  style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 16),
+              _LanguageButton(
+                locale: DLAppLocal.zhCN,
+                label: '中文',
+                isSelected: currentLocale.languageCode == 'zh',
+                onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.zhCN),
+              ),
+              const SizedBox(height: 8),
+              _LanguageButton(
+                locale: DLAppLocal.enUS,
+                label: 'English',
+                isSelected: currentLocale.languageCode == 'en',
+                onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.enUS),
+              ),
+              const SizedBox(height: 8),
+              _LanguageButton(
+                locale: DLAppLocal.esES,
+                label: 'Español',
+                isSelected: currentLocale.languageCode == 'es',
+                onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.esES),
+              ),
+            ],
+          ),
         ),
       ),
     );

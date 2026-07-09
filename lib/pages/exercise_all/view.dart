@@ -20,6 +20,7 @@ class ExerciseAllPage extends ConsumerWidget {
     final scrollController = ref.watch(exerciseScrollControllerProvider);
 
     return Scaffold(
+      appBar: AppBar(title: Text(appText.exerciseAllPageTitle)),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

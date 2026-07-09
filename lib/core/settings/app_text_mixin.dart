@@ -43,9 +43,46 @@ mixin DLTextMixin {
   String get secondaryMusclesLabel =>
       text('secondary_muscles_label', 'Secondary Muscles');
 
+  // Workout plan labels
+  String get workoutPlanTitle => text('workout_plan_title', 'Workout Plan');
+  String get addExerciseLabel => text('add_exercise_label', 'Add Exercise');
+  String get clearPlanLabel => text('clear_plan_label', 'Clear Plan');
+  String get workoutPlanEmpty => text('workout_plan_empty', 'No exercises yet');
+  String get workoutPlanEmptyHint =>
+      text('workout_plan_empty_hint', 'Tap + to add exercises');
+  String get workoutItemsLabel =>
+      text('workout_items_label', 'Exercises');
+  String get cyclesLabel => text('cycles_label', 'Cycles');
+  String get setsLabel => text('sets_label', 'Sets');
+  String get repsLabel => text('reps_label', 'Reps');
+  String get selectExerciseLabel =>
+      text('select_exercise_label', 'Select Exercise');
+  String get completeWorkoutLabel =>
+      text('complete_workout_label', 'Complete Workout');
+  String get workoutCompletedMessage =>
+      text('workout_completed_message', 'Workout completed!');
+  String get workoutHistoryTitle =>
+      text('workout_history_title', 'Workout History');
+  String get workoutInProgress =>
+      text('workout_in_progress', 'In Progress');
+  String get workoutCompleted =>
+      text('workout_completed', 'Completed');
+  String get workoutHistoryEmpty =>
+      text('workout_history_empty', 'No workout history');
+  String get workoutHistoryEmptyHint =>
+      text('workout_history_empty_hint', 'Complete a workout to see it here');
+  String get addWorkoutLabel => text('add_workout_label', 'New Workout');
+  String get createWorkoutLabel =>
+      text('create_workout_label', 'Create Workout');
+  String get selectWorkoutHint =>
+      text('select_workout_hint', 'Select a workout to edit');
+  String get noExercisesHint =>
+      text('no_exercises_hint', 'No exercises added yet');
+
   String tabTitle(TabModule tab) {
     return switch (tab) {
       TabModule.home => homePageTitle,
+      TabModule.workoutPlan => workoutPlanTitle,
       TabModule.exerciseAll => exerciseAllPageTitle,
       TabModule.mine => mineTabTitle,
     };
