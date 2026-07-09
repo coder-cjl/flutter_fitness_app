@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/pages/exercise_detail/provider.dart';
 import 'package:fitness_app/pages/exercise_detail/view.dart';

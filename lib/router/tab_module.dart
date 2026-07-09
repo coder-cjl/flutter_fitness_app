@@ -1,11 +1,12 @@
 enum TabModule {
-  home('home'),
-  exerciseAll('exercise_all'),
-  mine('mine');
+  home('home', 'Home'),
+  exerciseAll('exercise_all', 'All'),
+  mine('mine', 'Mine');
 
-  const TabModule(this.queryValue);
+  const TabModule(this.queryValue, this.tabName);
 
   final String queryValue;
+  final String tabName;
 
   static TabModule fromQuery(String? value) {
     return switch (value) {

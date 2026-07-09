@@ -34,7 +34,7 @@ class TabBarPage extends ConsumerWidget {
 
             ref
                 .read(navigationProvider)
-                .goNamed(AppRoute.tabName, queryParams: {'tab': nextTab.name});
+                .goNamed(AppRoute.tabName, queryParams: {'tab': nextTab.queryValue});
           },
           items: [
             BottomNavigationBarItem(
