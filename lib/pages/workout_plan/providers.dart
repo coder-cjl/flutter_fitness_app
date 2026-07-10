@@ -1,10 +1,10 @@
 import 'dart:convert';
+
 import 'package:fitness_app/exercises/data/exercise_data_source_provider.dart';
 import 'package:fitness_app/exercises/models/exercise_model.dart';
 import 'package:fitness_app/exercises/models/localized_value.dart';
 import 'package:fitness_app/pages/workout_plan/models.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// 任务状态
@@ -73,17 +73,23 @@ class WorkoutTask {
   ) {
     final itemsList = (json['items'] as List<dynamic>?) ?? [];
     final items = itemsList.map((itemJson) {
-      final exerciseId = itemJson['exerciseId'] as String;
+      final itemMap = itemJson as Map<String, dynamic>;
+      final exerciseId = itemMap['exerciseId'] as String? ?? '';
       final exercise = getExercise(exerciseId);
-      return WorkoutItem.fromJson(itemJson as Map<String, dynamic>, exercise);
+      return WorkoutItem.fromJson(itemMap, exercise);
     }).toList();
+
+    final statusIndex = json['status'] as int? ?? 0;
+    final status = statusIndex >= 0 && statusIndex < TaskStatus.values.length
+        ? TaskStatus.values[statusIndex]
+        : TaskStatus.inProgress;
 
     return WorkoutTask(
       id: json['id'] as String,
       name: json['name'] as String? ?? 'Workout',
       items: items,
       cycles: json['cycles'] as int? ?? 1,
-      status: TaskStatus.values[json['status'] as int? ?? 0],
+      status: status,
       progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
       createdAt: json['createdAt'] != null
           ? DateTime.tryParse(json['createdAt'] as String)
@@ -98,22 +104,16 @@ class WorkoutTask {
 /// 当前创建的任务
 final currentTaskProvider =
     NotifierProvider<CurrentTaskNotifier, WorkoutTaskState>(
-  CurrentTaskNotifier.new,
-);
+      CurrentTaskNotifier.new,
+    );
 
 class WorkoutTaskState {
-  const WorkoutTaskState({
-    this.items = const [],
-    this.cycles = 1,
-  });
+  const WorkoutTaskState({this.items = const [], this.cycles = 1});
 
   final List<WorkoutItem> items;
   final int cycles;
 
-  WorkoutTaskState copyWith({
-    List<WorkoutItem>? items,
-    int? cycles,
-  }) {
+  WorkoutTaskState copyWith({List<WorkoutItem>? items, int? cycles}) {
     return WorkoutTaskState(
       items: items ?? this.items,
       cycles: cycles ?? this.cycles,
@@ -172,13 +172,14 @@ class CurrentTaskNotifier extends Notifier<WorkoutTaskState> {
   Future<void> createTask() async {
     if (state.isEmpty) return;
 
+    final now = DateTime.now();
     final task = WorkoutTask(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: 'Workout ${DateTime.now().millisecondsSinceEpoch}',
+      id: now.millisecondsSinceEpoch.toString(),
+      name: 'Workout ${now.millisecondsSinceEpoch}',
       items: state.items,
       cycles: state.cycles,
       status: TaskStatus.inProgress,
-      createdAt: DateTime.now(),
+      createdAt: now,
     );
 
     await ref.read(tasksProvider.notifier).addTask(task);
@@ -187,50 +188,64 @@ class CurrentTaskNotifier extends Notifier<WorkoutTaskState> {
 }
 
 /// 所有任务列表
-final tasksProvider = NotifierProvider<TasksNotifier, List<WorkoutTask>>(
+final tasksProvider = AsyncNotifierProvider<TasksNotifier, List<WorkoutTask>>(
   TasksNotifier.new,
 );
 
-/// 选中的任务详情
-final selectedTaskProvider = StateProvider<WorkoutTask?>((ref) => null);
+/// 按 id 读取任务详情，详情页不再依赖全局“选中任务”状态。
+final taskByIdProvider = Provider.autoDispose
+    .family<AsyncValue<WorkoutTask?>, String>((ref, taskId) {
+      final tasksAsync = ref.watch(tasksProvider);
+      return tasksAsync.whenData((tasks) {
+        for (final task in tasks) {
+          if (task.id == taskId) return task;
+        }
+        return null;
+      });
+    });
 
-class TasksNotifier extends Notifier<List<WorkoutTask>> {
+class TasksNotifier extends AsyncNotifier<List<WorkoutTask>> {
   static const _storageKey = 'workout_tasks';
 
   @override
-  List<WorkoutTask> build() {
-    Future.microtask(() => _loadFromStorage());
-    return [];
+  Future<List<WorkoutTask>> build() async {
+    final exercisesFuture = ref.watch(exercisesProvider.future);
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(_storageKey);
+    if (jsonString == null || jsonString.isEmpty) {
+      return const <WorkoutTask>[];
+    }
+
+    final exercises = await exercisesFuture;
+    return _decodeTasks(jsonString, exercises);
   }
 
-  Future<void> _loadFromStorage() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString(_storageKey);
-      if (jsonString == null) return;
-
-      final exercises = ref.read(exercisesProvider).maybeWhen(
-        data: (data) => data,
-        orElse: () => <ExerciseModel>[],
-      );
-      final exerciseMap = {for (var e in exercises) e.id: e};
-
-      final List<dynamic> jsonList = jsonDecode(jsonString);
-      final tasks = jsonList.map((json) {
-        return WorkoutTask.fromJson(
-          json as Map<String, dynamic>,
-          (id) => exerciseMap[id] ?? _createPlaceholderExercise(id),
-        );
-      }).toList();
-
-      // 按创建时间倒序
-      tasks.sort((a, b) =>
-          (b.createdAt ?? DateTime.now()).compareTo(a.createdAt ?? DateTime.now()));
-
-      state = tasks;
-    } catch (e) {
-      // 忽略错误
+  List<WorkoutTask> _decodeTasks(
+    String jsonString,
+    List<ExerciseModel> exercises,
+  ) {
+    final exerciseMap = {
+      for (final exercise in exercises) exercise.id: exercise,
+    };
+    final decoded = jsonDecode(jsonString);
+    if (decoded is! List) {
+      return const <WorkoutTask>[];
     }
+
+    final tasks = decoded.whereType<Map<String, dynamic>>().map((json) {
+      return WorkoutTask.fromJson(
+        json,
+        (id) => exerciseMap[id] ?? _createPlaceholderExercise(id),
+      );
+    }).toList();
+
+    final fallbackDate = DateTime.fromMillisecondsSinceEpoch(0);
+    tasks.sort(
+      (a, b) =>
+          (b.createdAt ?? fallbackDate).compareTo(a.createdAt ?? fallbackDate),
+    );
+
+    return tasks;
   }
 
   ExerciseModel _createPlaceholderExercise(String id) {
@@ -252,62 +267,113 @@ class TasksNotifier extends Notifier<List<WorkoutTask>> {
     );
   }
 
-  Future<void> _saveToStorage() async {
+  Future<void> _saveToStorage(List<WorkoutTask> tasks) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final jsonList = state.map((t) => t.toJson()).toList();
+      final jsonList = tasks.map((task) => task.toJson()).toList();
       await prefs.setString(_storageKey, jsonEncode(jsonList));
-    } catch (e) {
-      // 忽略错误
+    } catch (_) {
+      // 本地保存失败时保留内存状态，避免打断用户当前操作。
     }
   }
 
   Future<void> addTask(WorkoutTask task) async {
-    state = [task, ...state];
-    await _saveToStorage();
+    await update((tasks) async {
+      final nextTasks = [task, ...tasks];
+      await _saveToStorage(nextTasks);
+      return nextTasks;
+    });
   }
 
   Future<void> updateTask(WorkoutTask task) async {
-    state = state.map((t) => t.id == task.id ? task : t).toList();
-    await _saveToStorage();
+    await update((tasks) async {
+      final nextTasks = tasks.map((t) => t.id == task.id ? task : t).toList();
+      await _saveToStorage(nextTasks);
+      return nextTasks;
+    });
   }
 
   Future<void> removeTask(String taskId) async {
-    state = state.where((t) => t.id != taskId).toList();
-    await _saveToStorage();
+    await update((tasks) async {
+      final nextTasks = tasks.where((t) => t.id != taskId).toList();
+      await _saveToStorage(nextTasks);
+      return nextTasks;
+    });
   }
 
   Future<void> completeTask(String taskId) async {
-    state = state.map((t) {
-      if (t.id == taskId) {
-        return t.copyWith(
-          status: TaskStatus.completed,
-          progress: 1.0,
-          completedAt: DateTime.now(),
-        );
-      }
-      return t;
-    }).toList();
-    await _saveToStorage();
+    await update((tasks) async {
+      final nextTasks = tasks.map((t) {
+        if (t.id == taskId) {
+          return t.copyWith(
+            status: TaskStatus.completed,
+            progress: 1.0,
+            completedAt: DateTime.now(),
+          );
+        }
+        return t;
+      }).toList();
+      await _saveToStorage(nextTasks);
+      return nextTasks;
+    });
   }
 
   Future<void> abandonTask(String taskId) async {
-    state = state.map((t) {
-      if (t.id == taskId) {
-        return t.copyWith(status: TaskStatus.abandoned);
-      }
-      return t;
-    }).toList();
-    await _saveToStorage();
+    await update((tasks) async {
+      final nextTasks = tasks.map((t) {
+        if (t.id == taskId) {
+          return t.copyWith(status: TaskStatus.abandoned);
+        }
+        return t;
+      }).toList();
+      await _saveToStorage(nextTasks);
+      return nextTasks;
+    });
   }
 
   Future<void> updateProgress(String taskId, double progress) async {
-    state = state.map((t) {
-      if (t.id == taskId) {
-        return t.copyWith(progress: progress.clamp(0.0, 1.0));
-      }
-      return t;
-    }).toList();
-    await _saveToStorage();
+    await update((tasks) async {
+      final nextTasks = tasks.map((t) {
+        if (t.id == taskId) {
+          return t.copyWith(progress: progress.clamp(0.0, 1.0));
+        }
+        return t;
+      }).toList();
+      await _saveToStorage(nextTasks);
+      return nextTasks;
+    });
   }
 }
+
+// 选择动作时的筛选状态：仅在选择弹窗中使用，自动释放。
+final exerciseSelectorFilterProvider =
+    NotifierProvider.autoDispose<ExerciseSelectorFilterNotifier, String?>(
+      ExerciseSelectorFilterNotifier.new,
+    );
+
+class ExerciseSelectorFilterNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void setFilter(String? bodyPart) {
+    state = bodyPart;
+  }
+}
+
+// 选择动作时的筛选列表。
+final filteredSelectorExercisesProvider =
+    Provider.autoDispose<AsyncValue<List<ExerciseModel>>>((ref) {
+      final exercisesAsync = ref.watch(exercisesProvider);
+      final selectedBodyPart = ref.watch(exerciseSelectorFilterProvider);
+
+      return exercisesAsync.whenData((exercises) {
+        if (selectedBodyPart == null) {
+          return exercises;
+        }
+        return exercises
+            .where(
+              (e) => e.bodyPart.toLowerCase() == selectedBodyPart.toLowerCase(),
+            )
+            .toList();
+      });
+    });

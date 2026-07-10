@@ -47,5 +47,9 @@
   "no_exercises_hint": "暂未添加动作",
   "create_task_label": "创建任务",
   "task_created_message": "任务已创建！",
-  "workout_abandoned": "已放弃"
+  "workout_abandoned": "已放弃",
+  "exercise_not_found": "未找到动作",
+  "loading_tasks": "正在加载任务...",
+  "tasks_load_error": "任务加载失败",
+  "task_not_found": "未找到任务"
 }

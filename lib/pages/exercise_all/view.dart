@@ -1,7 +1,6 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/widgets/image_asset.dart';
 import 'package:fitness_app/exercises/models/exercise_model.dart';
-import 'package:fitness_app/pages/exercise_detail/provider.dart';
 import 'package:fitness_app/pages/exercise_all/providers.dart';
 import 'package:fitness_app/pages/exercise_all/state.dart';
 import 'package:fitness_app/router/app_route_url.dart';
@@ -107,7 +106,6 @@ class _ExerciseCard extends ConsumerWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          ref.read(selectedExerciseProvider.notifier).state = exercise;
           ref
               .read(navigationProvider)
               .pushNamed(

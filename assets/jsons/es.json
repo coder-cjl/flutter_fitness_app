@@ -47,5 +47,9 @@
   "no_exercises_hint": "Aún no hay ejercicios añadidos",
   "create_task_label": "Crear Tarea",
   "task_created_message": "¡Tarea creada!",
-  "workout_abandoned": "Abandonado"
+  "workout_abandoned": "Abandonado",
+  "exercise_not_found": "Ejercicio no encontrado",
+  "loading_tasks": "Cargando tareas...",
+  "tasks_load_error": "Error al cargar las tareas",
+  "task_not_found": "Tarea no encontrada"
 }

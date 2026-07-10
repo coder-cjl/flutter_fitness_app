@@ -1,12 +1,10 @@
 // ignore_for_file: unused_element
 
 import 'package:fitness_app/core/settings/app_text_provider.dart';
-import 'package:fitness_app/pages/exercise_detail/provider.dart';
 import 'package:fitness_app/pages/exercise_detail/view.dart';
 import 'package:fitness_app/pages/login/view.dart';
 import 'package:fitness_app/pages/tab/view.dart';
 import 'package:fitness_app/pages/task_detail/view.dart';
-import 'package:fitness_app/pages/workout_plan/providers.dart';
 import 'package:fitness_app/router/app_route_url.dart';
 import 'package:fitness_app/router/navigation.dart';
 import 'package:flutter/material.dart';
@@ -68,28 +66,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoute.exerciseDetailName,
         path: AppRoute.exerciseDetailPath,
         builder: (context, state) {
-          final exercise = ProviderScope.containerOf(
-            context,
-          ).read(selectedExerciseProvider);
-          if (exercise == null) {
-            return const Scaffold(
-              body: Center(child: Text('Exercise not found')),
-            );
-          }
-          return ExerciseDetailPage(exercise: exercise);
+          return ExerciseDetailPage(
+            exerciseId: state.pathParameters['id'] ?? '',
+          );
         },
       ),
       GoRoute(
         name: AppRoute.taskDetailName,
         path: AppRoute.taskDetailPath,
         builder: (context, state) {
-          final task = ProviderScope.containerOf(context).read(selectedTaskProvider);
-          if (task == null) {
-            return const Scaffold(
-              body: Center(child: Text('Task not found')),
-            );
-          }
-          return TaskDetailPage(task: task);
+          return TaskDetailPage(taskId: state.pathParameters['id'] ?? '');
         },
       ),
     ],

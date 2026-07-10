@@ -1,45 +1,10 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/widgets/image_asset.dart';
-import 'package:fitness_app/exercises/data/exercise_data_source_provider.dart';
-import 'package:fitness_app/exercises/models/exercise_model.dart';
 import 'package:fitness_app/pages/exercise_all/state.dart';
 import 'package:fitness_app/pages/workout_plan/models.dart';
 import 'package:fitness_app/pages/workout_plan/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-// 选择动作时的筛选状态
-final exerciseSelectorFilterProvider =
-    NotifierProvider<ExerciseSelectorFilterNotifier, String?>(
-  ExerciseSelectorFilterNotifier.new,
-);
-
-class ExerciseSelectorFilterNotifier extends Notifier<String?> {
-  @override
-  String? build() => null;
-
-  void setFilter(String? bodyPart) {
-    state = bodyPart;
-  }
-}
-
-// 选择动作时的筛选列表
-final filteredSelectorExercisesProvider =
-    Provider<AsyncValue<List<ExerciseModel>>>((ref) {
-  final exercisesAsync = ref.watch(exercisesProvider);
-  final selectedBodyPart = ref.watch(exerciseSelectorFilterProvider);
-
-  return exercisesAsync.whenData((exercises) {
-    if (selectedBodyPart == null) {
-      return exercises;
-    }
-    return exercises
-        .where(
-          (e) => e.bodyPart.toLowerCase() == selectedBodyPart.toLowerCase(),
-        )
-        .toList();
-  });
-});
 
 class WorkoutPlanPage extends ConsumerWidget {
   const WorkoutPlanPage({super.key});
@@ -100,8 +65,8 @@ class WorkoutPlanPage extends ConsumerWidget {
           Text(
             appText.workoutPlanEmptyHint,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -128,9 +93,9 @@ class WorkoutPlanPage extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             child: Text(
               appText.workoutItemsLabel,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
 
@@ -212,10 +177,9 @@ class WorkoutPlanPage extends ConsumerWidget {
                   child: Text(
                     '${taskState.cycles}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
                 IconButton(
@@ -274,10 +238,9 @@ class _WorkoutItemCard extends ConsumerWidget {
                     child: Text(
                       '${index + 1}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).colorScheme.onPrimaryContainer,
-                          ),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
                     ),
                   ),
                 ),
@@ -286,8 +249,8 @@ class _WorkoutItemCard extends ConsumerWidget {
                   child: Text(
                     item.exercise.name,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 IconButton(
@@ -352,8 +315,8 @@ class _SetRepControl extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 4),
         Row(
@@ -371,9 +334,9 @@ class _SetRepControl extends StatelessWidget {
               ),
               child: Text(
                 '$value',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             IconButton(
@@ -497,11 +460,11 @@ class _ExerciseSelectorSheetState
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stack) =>
                                   Container(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
-                                child: const Icon(Icons.fitness_center),
-                              ),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHighest,
+                                    child: const Icon(Icons.fitness_center),
+                                  ),
                             ),
                           ),
                         ),

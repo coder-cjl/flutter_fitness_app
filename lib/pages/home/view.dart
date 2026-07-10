@@ -1,3 +1,4 @@
+import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/pages/workout_plan/providers.dart';
 import 'package:fitness_app/router/app_route_url.dart';
@@ -11,8 +12,26 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appText = ref.watch(appTextProvider);
-    final tasks = ref.watch(tasksProvider);
+    final tasksAsync = ref.watch(tasksProvider);
 
+    return tasksAsync.when(
+      loading: () => Scaffold(
+        appBar: AppBar(title: Text(appText.homePageTitle)),
+        body: Center(child: Text(appText.loadingTasks)),
+      ),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(title: Text(appText.homePageTitle)),
+        body: Center(child: Text(appText.tasksLoadError)),
+      ),
+      data: (tasks) => _buildContent(context, appText, tasks),
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    DLAppText appText,
+    List<WorkoutTask> tasks,
+  ) {
     final inProgressTasks = tasks
         .where((t) => t.status == TaskStatus.inProgress)
         .toList();
@@ -260,7 +279,6 @@ class _TaskCard extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: InkWell(
         onTap: () {
-          ref.read(selectedTaskProvider.notifier).state = task;
           ref
               .read(navigationProvider)
               .pushNamed(AppRoute.taskDetailName, params: {'id': task.id});
@@ -308,13 +326,14 @@ class _TaskCard extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () =>
-                          ref.read(tasksProvider.notifier).abandonTask(task.id),
+                      onPressed: () async => await ref
+                          .read(tasksProvider.notifier)
+                          .abandonTask(task.id),
                       child: const Text('Abandon'),
                     ),
                     const SizedBox(width: 8),
                     ElevatedButton(
-                      onPressed: () => ref
+                      onPressed: () async => await ref
                           .read(tasksProvider.notifier)
                           .completeTask(task.id),
                       child: const Text('Complete'),

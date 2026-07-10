@@ -47,5 +47,9 @@
   "no_exercises_hint": "No exercises added yet",
   "create_task_label": "Create Task",
   "task_created_message": "Task created!",
-  "workout_abandoned": "Abandoned"
+  "workout_abandoned": "Abandoned",
+  "exercise_not_found": "Exercise not found",
+  "loading_tasks": "Loading tasks...",
+  "tasks_load_error": "Failed to load tasks",
+  "task_not_found": "Task not found"
 }

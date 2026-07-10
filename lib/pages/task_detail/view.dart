@@ -1,4 +1,4 @@
-import 'package:fitness_app/pages/exercise_detail/provider.dart';
+import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/pages/workout_plan/providers.dart';
 import 'package:fitness_app/router/app_route_url.dart';
 import 'package:fitness_app/router/app_router_provider.dart';
@@ -6,7 +6,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TaskDetailPage extends ConsumerWidget {
-  const TaskDetailPage({super.key, required this.task});
+  const TaskDetailPage({super.key, required this.taskId});
+
+  final String taskId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appText = ref.watch(appTextProvider);
+    final taskAsync = ref.watch(taskByIdProvider(taskId));
+
+    return taskAsync.when(
+      loading: () => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text(appText.loadingTasks)),
+      ),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text(appText.tasksLoadError)),
+      ),
+      data: (task) {
+        if (task == null) {
+          return Scaffold(
+            appBar: AppBar(title: Text(appText.taskNotFound)),
+            body: Center(child: Text(appText.taskNotFound)),
+          );
+        }
+
+        return _TaskDetailContent(task: task);
+      },
+    );
+  }
+}
+
+class _TaskDetailContent extends ConsumerWidget {
+  const _TaskDetailContent({required this.task});
 
   final WorkoutTask task;
 
@@ -43,10 +76,12 @@ class TaskDetailPage extends ConsumerWidget {
               subtitle: Text('${item.sets} sets × ${item.reps} reps'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                ref.read(selectedExerciseProvider.notifier).state = item.exercise;
                 ref
                     .read(navigationProvider)
-                    .pushNamed(AppRoute.exerciseDetailName, params: {'id': item.exercise.id});
+                    .pushNamed(
+                      AppRoute.exerciseDetailName,
+                      params: {'id': item.exercise.id},
+                    );
               },
             ),
           );

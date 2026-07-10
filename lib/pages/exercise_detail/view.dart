@@ -3,11 +3,45 @@ import 'package:fitness_app/core/settings/app_text.dart';
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/widgets/image_gif_asset.dart';
 import 'package:fitness_app/exercises/models/exercise_model.dart';
+import 'package:fitness_app/pages/exercise_detail/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExerciseDetailPage extends ConsumerWidget {
-  const ExerciseDetailPage({super.key, required this.exercise});
+  const ExerciseDetailPage({super.key, required this.exerciseId});
+
+  final String exerciseId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appText = ref.watch(appTextProvider);
+    final exerciseAsync = ref.watch(exerciseByIdProvider(exerciseId));
+
+    return exerciseAsync.when(
+      loading: () => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text(appText.loadingExercises)),
+      ),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text(appText.exercisesLoadError)),
+      ),
+      data: (exercise) {
+        if (exercise == null) {
+          return Scaffold(
+            appBar: AppBar(title: Text(appText.exerciseNotFound)),
+            body: Center(child: Text(appText.exerciseNotFound)),
+          );
+        }
+
+        return _ExerciseDetailContent(exercise: exercise);
+      },
+    );
+  }
+}
+
+class _ExerciseDetailContent extends ConsumerWidget {
+  const _ExerciseDetailContent({required this.exercise});
 
   final ExerciseModel exercise;
 

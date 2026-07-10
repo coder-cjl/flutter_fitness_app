@@ -20,6 +20,8 @@ mixin DLTextMixin {
       text('exercises_load_error', 'Failed to load exercises');
   String get exercisesEmpty =>
       text('exercises_empty', 'No exercises available');
+  String get exerciseNotFound =>
+      text('exercise_not_found', 'Exercise not found');
   String get instructionLabel => text('instruction_label', 'Instruction');
   String get stepsLabel => text('steps_label', 'Steps');
   String get minePageTitle => text('mine_page_title', 'Mine Page');
@@ -50,8 +52,7 @@ mixin DLTextMixin {
   String get workoutPlanEmpty => text('workout_plan_empty', 'No exercises yet');
   String get workoutPlanEmptyHint =>
       text('workout_plan_empty_hint', 'Tap + to add exercises');
-  String get workoutItemsLabel =>
-      text('workout_items_label', 'Exercises');
+  String get workoutItemsLabel => text('workout_items_label', 'Exercises');
   String get cyclesLabel => text('cycles_label', 'Cycles');
   String get setsLabel => text('sets_label', 'Sets');
   String get repsLabel => text('reps_label', 'Reps');
@@ -63,10 +64,8 @@ mixin DLTextMixin {
       text('workout_completed_message', 'Workout completed!');
   String get workoutHistoryTitle =>
       text('workout_history_title', 'Workout History');
-  String get workoutInProgress =>
-      text('workout_in_progress', 'In Progress');
-  String get workoutCompleted =>
-      text('workout_completed', 'Completed');
+  String get workoutInProgress => text('workout_in_progress', 'In Progress');
+  String get workoutCompleted => text('workout_completed', 'Completed');
   String get workoutHistoryEmpty =>
       text('workout_history_empty', 'No workout history');
   String get workoutHistoryEmptyHint =>
@@ -81,8 +80,10 @@ mixin DLTextMixin {
   String get createTaskLabel => text('create_task_label', 'Create Task');
   String get taskCreatedMessage =>
       text('task_created_message', 'Task created!');
-  String get workoutAbandoned =>
-      text('workout_abandoned', 'Abandoned');
+  String get loadingTasks => text('loading_tasks', 'Loading tasks...');
+  String get tasksLoadError => text('tasks_load_error', 'Failed to load tasks');
+  String get taskNotFound => text('task_not_found', 'Task not found');
+  String get workoutAbandoned => text('workout_abandoned', 'Abandoned');
 
   String tabTitle(TabModule tab) {
     return switch (tab) {
