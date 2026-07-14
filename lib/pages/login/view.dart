@@ -22,12 +22,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           children: [
             Text(appText.loginPageTitle),
             const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                // ref.read(authStateProvider.notifier).signIn();
-              },
-              child: Text(appText.signInButton),
-            ),
+            ElevatedButton(onPressed: () {}, child: Text(appText.signInButton)),
           ],
         ),
       ),
