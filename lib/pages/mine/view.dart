@@ -1,6 +1,7 @@
 import 'package:fitness_app/core/settings/app_locale_provider.dart';
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/core/settings/app_theme_provider.dart';
+import 'package:fitness_app/pages/login/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,34 +28,51 @@ class MinePage extends ConsumerWidget {
               Text(currentThemeLabel),
               const SizedBox(height: 8),
               ElevatedButton(
-                onPressed: () => ref.read(appThemeModeProvider.notifier).toggle(),
+                onPressed: () =>
+                    ref.read(appThemeModeProvider.notifier).toggle(),
                 child: Text(switchThemeLabel),
+              ),
+              const SizedBox(height: 8),
+              Text("退出登录"),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(userProvider.notifier).logout();
+                },
+                child: Text("退出登录"),
               ),
               const SizedBox(height: 24),
               const Divider(),
               const SizedBox(height: 16),
-              Text('Language / 语言 / Idioma',
-                  style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Language / 语言 / Idioma',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 16),
               _LanguageButton(
                 locale: DLAppLocal.zhCN,
                 label: '中文',
                 isSelected: currentLocale.languageCode == 'zh',
-                onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.zhCN),
+                onTap: () => ref
+                    .read(appLocaleProvider.notifier)
+                    .setLocale(DLAppLocal.zhCN),
               ),
               const SizedBox(height: 8),
               _LanguageButton(
                 locale: DLAppLocal.enUS,
                 label: 'English',
                 isSelected: currentLocale.languageCode == 'en',
-                onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.enUS),
+                onTap: () => ref
+                    .read(appLocaleProvider.notifier)
+                    .setLocale(DLAppLocal.enUS),
               ),
               const SizedBox(height: 8),
               _LanguageButton(
                 locale: DLAppLocal.esES,
                 label: 'Español',
                 isSelected: currentLocale.languageCode == 'es',
-                onTap: () => ref.read(appLocaleProvider.notifier).setLocale(DLAppLocal.esES),
+                onTap: () => ref
+                    .read(appLocaleProvider.notifier)
+                    .setLocale(DLAppLocal.esES),
               ),
             ],
           ),

@@ -1,4 +1,6 @@
 import 'package:fitness_app/core/settings/app_text_provider.dart';
+import 'package:fitness_app/pages/login/provider.dart';
+import 'package:fitness_app/pages/login/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +24,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           children: [
             Text(appText.loginPageTitle),
             const SizedBox(height: 12),
-            ElevatedButton(onPressed: () {}, child: Text(appText.signInButton)),
+            ElevatedButton(
+              onPressed: () {
+                ref
+                    .read(userProvider.notifier)
+                    .login(
+                      UserModel(
+                        id: 'user123',
+                        name: 'John Doe',
+                        email: 'johndoe@example.com',
+                      ),
+                    );
+              },
+              child: Text(appText.signInButton),
+            ),
           ],
         ),
       ),

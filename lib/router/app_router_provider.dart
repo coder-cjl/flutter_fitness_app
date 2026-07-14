@@ -2,6 +2,7 @@
 
 import 'package:fitness_app/core/settings/app_text_provider.dart';
 import 'package:fitness_app/pages/exercise_detail/view.dart';
+import 'package:fitness_app/pages/login/provider.dart';
 import 'package:fitness_app/pages/login/view.dart';
 import 'package:fitness_app/pages/tab/view.dart';
 import 'package:fitness_app/pages/task_detail/view.dart';
@@ -24,13 +25,9 @@ final navigationProvider = Provider<DLNavigation>((ref) {
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final rootNavigatorKey = ref.watch(rootNavigatorKeyProvider);
-  final authRefreshListenable = ValueNotifier<int>(0);
-
-  ref.onDispose(authRefreshListenable.dispose);
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    refreshListenable: authRefreshListenable,
     initialLocation: AppRoute.tabPath,
     routes: <RouteBase>[
       GoRoute(
@@ -43,7 +40,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoute.tabPath,
         builder: (context, state) {
           final tab = TabModule.fromQuery(state.uri.queryParameters['tab']);
-
           return TabBarPage(activeTab: tab);
         },
       ),
@@ -79,21 +75,29 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
     ],
-    // redirect: (context, state) {
-    //   final isOnLogin = state.matchedLocation == AppRoute.loginPath;
+    redirect: (context, state) {
+      final userState = ref.watch(userProvider);
 
-    //   if (isOnLogin) {
-    //     final from = state.uri.queryParameters['from'];
+      return userState.when(
+        data: (user) {
+          final isOnLogin = state.matchedLocation == AppRoute.loginPath;
 
-    //     if (_isSafeInternalLocation(from) && !_isLoginLocation(from)) {
-    //       return from;
-    //     }
+          // 未登录，且不在登录页 → 跳转登录页
+          if (!user.isLoggedIn && !isOnLogin) {
+            return AppRoute.loginPath;
+          }
 
-    //     return AppRoute.tabPath;
-    //   }
+          // 已登录，且在登录页 → 跳转首页
+          if (user.isLoggedIn && isOnLogin) {
+            return AppRoute.tabPath;
+          }
 
-    //   return null;
-    // },
+          return null;
+        },
+        loading: () => null, // 加载中不拦截，等状态确定再判断
+        error: (_, _) => null,
+      );
+    },
     errorBuilder: (context, state) {
       final container = ProviderScope.containerOf(context);
       final appText = container.read(appTextProvider);
